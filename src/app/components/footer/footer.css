@@ -1,0 +1,54 @@
+
+/* ================= FOOTER ================= */
+
+.footer-clinica {
+    background-color: var(--color-principal-oscuro);
+    color: white;
+}
+
+.footer-clinica hr {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-clinica a {
+    color: white;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 767.98px) {
+    .imagen-carrusel {
+        height: 350px;
+    }
+
+    .carousel-caption {
+        bottom: 8%;
+    }
+
+    .carousel-caption p {
+        font-size: 0.95rem;
+    }
+
+    .imagen-medico {
+        height: 240px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .imagen-carrusel {
+        height: 300px;
+    }
+
+    .carousel-caption {
+        bottom: 5%;
+    }
+
+    .carousel-caption p {
+        display: none;
+    }
+
+    .sidebar-especialidades {
+        margin-bottom: 1rem;
+    }
+}

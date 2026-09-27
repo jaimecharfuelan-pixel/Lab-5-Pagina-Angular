@@ -1,0 +1,206 @@
+<main>
+  <!-- ================= SECCIÓN 1: CARRUSEL ================= -->
+  <section id="inicio" class="seccion-inicio">
+    <div class="container py-4">
+      <h2 class="text-center mb-4">Promociones y servicios</h2>
+      <div id="carruselPromociones" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carruselPromociones" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Promoción 1"></button>
+          <button type="button" data-bs-target="#carruselPromociones" data-bs-slide-to="1" aria-label="Promoción 2"></button>
+          <button type="button" data-bs-target="#carruselPromociones" data-bs-slide-to="2" aria-label="Promoción 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="assets/img/promociones/1.png" class="d-block w-100 imagen-carrusel" />
+          </div>
+          <div class="carousel-item">
+            <img src="assets/img/promociones/2.avif" class="d-block w-100 imagen-carrusel" />
+          </div>
+          <div class="carousel-item">
+            <img src="assets/img/promociones/3.avif" class="d-block w-100 imagen-carrusel" />
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carruselPromociones" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carruselPromociones" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECCIÓN 2: MÉDICOS ================= -->
+  <section id="medicos" class="seccion-medicos py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2>Nuestros especialistas</h2>
+        <p class="lead">Conoce nuestro equipo de profesionales y sus áreas de atención.</p>
+      </div>
+      <div class="row g-4">
+        <aside class="col-12 col-sm-2 col-md-4">
+          <div class="sidebar-especialidades">
+            <h3 class="h5">Especialidades</h3>
+            <p class="small">Selecciona una especialidad para consultar su descripción.</p>
+            <div class="list-group">
+              @for (esp of especialidades; track esp.id; let i = $index) {
+                <button type="button"
+                  class="list-group-item list-group-item-action"
+                  [class.active]="especialidadActivaId === esp.id"
+                  (click)="seleccionarEspecialidad(esp.id)">
+                  {{ esp.nombre }}
+                </button>
+              }
+            </div>
+            @if (especialidadSeleccionada) {
+              <div class="descripcion-especialidad mt-3" aria-live="polite">
+                <h4 class="h6">{{ especialidadSeleccionada.nombre }}</h4>
+                <p class="mb-0">{{ especialidadSeleccionada.descripcion }}</p>
+              </div>
+            }
+          </div>
+        </aside>
+        <div class="col-12 col-sm-10 col-md-8">
+          @if (medicosFiltrados.length === 0) {
+            <div class="alert alert-info">No hay médicos registrados en esta especialidad.</div>
+          } @else {
+            <div class="row g-3">
+              @for (medico of medicosFiltrados; track medico.id) {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                  <article class="card tarjeta-medico h-100">
+                    <img [src]="medico.imagen" class="card-img-top imagen-medico"
+                      [alt]="'Fotografía de ' + medico.nombre + ' ' + medico.apellido" />
+                    <div class="card-body">
+                      <h3 class="h5 card-title">{{ medico.nombre }} {{ medico.apellido }}</h3>
+                      <p class="small text-primary fw-bold mb-2">
+                        {{ obtenerNombreEspecialidad(medico.especialidad) }}
+                      </p>
+                      <p class="card-text"><strong>Subespecialidades:</strong> {{ medico.subespecialidades }}</p>
+                      <p class="card-text"><strong>Motivación:</strong> {{ medico.motivacion }}</p>
+                      <a href="#registro" class="btn btn-primary">Agendar</a>
+                    </div>
+                  </article>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+</section>
+<!-- ================= SECCIÓN 3: REGISTRO ================= -->
+  <section id="registro" class="seccion-registro py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2>Registro de nuevos usuarios</h2>
+        <p class="lead">Crea tu cuenta para conocer nuestros servicios.</p>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-9 col-lg-7">
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <form #formRegistro="ngForm" (ngSubmit)="onSubmit()" novalidate>
+<div class="mb-3">
+                  <label for="nombres" class="form-label">Nombres</label>
+                  <input type="text" class="form-control" id="nombres" name="nombres"
+                    placeholder="Escribe tus nombres" [(ngModel)]="nombres"
+                    [class.is-valid]="nombresValido === true"
+                    [class.is-invalid]="nombresValido === false"
+                    (input)="onNombresChange()" (blur)="onNombresChange()" required />
+                  @if (errorNombres) {
+                    <div class="text-danger small">{{ errorNombres }}</div>
+                  }
+                </div>
+<div class="mb-3">
+                  <label for="apellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control" id="apellidos" name="apellidos"
+                    placeholder="Escribe tus apellidos" [(ngModel)]="apellidos"
+                    [class.is-valid]="apellidosValido === true"
+                    [class.is-invalid]="apellidosValido === false"
+                    (input)="onApellidosChange()" (blur)="onApellidosChange()" required />
+                  @if (errorApellidos) {
+                    <div class="text-danger small">{{ errorApellidos }}</div>
+                  }
+                </div>
+<div class="mb-3">
+                  <label for="identificacion" class="form-label">Número de cédula o identificación</label>
+                  <input type="text" class="form-control" id="identificacion" name="identificacion"
+                    placeholder="Ejemplo: 1234567890" [(ngModel)]="identificacion"
+                    [class.is-valid]="identificacionValido === true"
+                    [class.is-invalid]="identificacionValido === false"
+                    (input)="onIdentificacionChange()" (blur)="onIdentificacionChange()" required />
+                  @if (errorIdentificacion) {
+                    <div class="text-danger small">{{ errorIdentificacion }}</div>
+                  }
+                </div>
+                <div class="mb-3">
+                  <label for="correo" class="form-label">Correo electrónico</label>
+                  <input type="email" class="form-control" id="correo" name="correo"
+                    placeholder="nombre@correo.com" [(ngModel)]="correo"
+                    [class.is-valid]="correoValido === true"
+                    [class.is-invalid]="correoValido === false"
+                    (input)="onCorreoChange()" (blur)="onCorreoChange()" required />
+                  @if (errorCorreo) {
+                    <div class="text-danger small">{{ errorCorreo }}</div>
+                  }
+                </div>
+               <div class="mb-3">
+                  <label for="contrasenia" class="form-label">Contraseña</label>
+                  <input type="password" class="form-control" id="contrasenia" name="contrasenia"
+                    placeholder="Mínimo 8 caracteres" [(ngModel)]="contrasenia"
+                    [class.is-valid]="contraseniaValido === true"
+                    [class.is-invalid]="contraseniaValido === false"
+                    (input)="onContraseniaChange()" (blur)="onContraseniaChange()" required />
+                  <div class="form-text">Para este borrador, utiliza al menos 8 caracteres.</div>
+                  @if (errorContrasenia) {
+                    <div class="text-danger small">{{ errorContrasenia }}</div>
+                  }
+  </div>
+                <div class="mb-3">
+                  <label for="confirmarContrasenia" class="form-label">Confirmar contraseña</label>
+                  <input type="password" class="form-control" id="confirmarContrasenia" name="confirmarContrasenia"
+                    placeholder="Repite la contraseña" [(ngModel)]="confirmarContrasenia"
+                    [class.is-valid]="confirmarValido === true"
+                    [class.is-invalid]="confirmarValido === false"
+                    (input)="onConfirmarChange()" (blur)="onConfirmarChange()" required />
+                  @if (errorConfirmarContrasenia) {
+                    <div class="text-danger small">{{ errorConfirmarContrasenia }}</div>
+                  }
+                </div>
+                <div class="mb-3">
+                  <label class="form-label d-block">Género</label>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="genero" id="generoFemenino" value="Femenino"
+                      [(ngModel)]="genero" (change)="onGeneroChange()" />
+                    <label class="form-check-label" for="generoFemenino">Femenino</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="genero" id="generoMasculino" value="Masculino"
+                      [(ngModel)]="genero" (change)="onGeneroChange()" />
+                    <label class="form-check-label" for="generoMasculino">Masculino</label>
+                  </div>
+                  @if (errorGenero) {
+                    <div class="text-danger small mt-1">{{ errorGenero }}</div>
+                  }
+                </div>
+                <div class="mb-4 form-check">
+                  <input class="form-check-input" type="checkbox" id="aceptaTerminos" name="aceptaTerminos"
+                    [(ngModel)]="aceptaTerminos" (change)="onTerminosChange()" />
+                  <label class="form-check-label" for="aceptaTerminos">Acepto términos y condiciones de uso</label>
+                  @if (errorTerminos) {
+                    <div class="text-danger small">{{ errorTerminos }}</div>
+                  }
+                </div>
+                <div class="d-flex justify-content-start">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-person-check-fill"></i> Registrar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
